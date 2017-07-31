@@ -1,4 +1,4 @@
-<script data-exec-on-popstate xmlns="http://www.w3.org/1999/html">
+<script data-exec-on-popstate>
 
     $(function () {
         LA.intervalIds = [];
@@ -153,7 +153,7 @@
                 <ul class="nav nav-pills nav-stacked">
                     @foreach($logFiles as $logFile)
                         <li @if($logFile == $fileName)class="active"@endif>
-                            <a href="{{ action('\Encore\Admin\LogViewer\LogController@index', ['file' => $logFile]) }}"><i class="fa fa-{{ ($logFile == $fileName) ? 'folder-open' : 'folder' }}"></i>{{ $logFile }}</a>
+                            <a href="{{ route('log-viewer-file', ['file' => $logFile]) }}"><i class="fa fa-{{ ($logFile == $fileName) ? 'folder-open' : 'folder' }}"></i>{{ $logFile }}</a>
                         </li>
                     @endforeach
                 </ul>

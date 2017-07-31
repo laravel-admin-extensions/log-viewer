@@ -22,7 +22,7 @@ class LogController extends Controller
                 'logFiles'  => $viewer->getLogFiles(),
                 'fileName'  => $viewer->file,
                 'end'       => $viewer->getFilesize(),
-                'tailPath'  => action('\Encore\Admin\LogViewer\LogController@tail', ['file' => $viewer->file]),
+                'tailPath'  => route('log-viewer-tail', ['file' => $viewer->file]),
                 'prevUrl'   => $viewer->getPrevPageUrl(),
                 'nextUrl'   => $viewer->getNextPageUrl(),
                 'filePath'  => $viewer->getFilePath(),

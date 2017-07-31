@@ -136,7 +136,7 @@ class LogViewer extends Extension
             return false;
         }
 
-        return action('\Encore\Admin\LogViewer\LogController@index', [
+        return route('log-viewer-index', [
             'file' => $this->file, 'offset' => $this->pageOffset['end'],
         ]);
     }
@@ -152,7 +152,7 @@ class LogViewer extends Extension
             return false;
         }
 
-        return action('\Encore\Admin\LogViewer\LogController@index', [
+        return route('log-viewer-index', [
             'file' => $this->file, 'offset' => -$this->pageOffset['start'],
         ]);
     }

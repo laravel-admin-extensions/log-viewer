@@ -1,39 +1,19 @@
 laravel-admin-ext/log-viewer
 ============================
 
+## Screenshot
+
+![wx20170809-165644](https://user-images.githubusercontent.com/1479100/29113581-fe48fd86-7d23-11e7-9ee7-9680957171ee.png)
+
 ## Installation
 
 ```
 $ composer require laravel-admin-ext/log-viewer -vvv
 
-```
-
-Open `app/Providers/AppServiceProvider.php`, and call the `LogViewer::boot` method within the `boot` method:
-
-```php
-<?php
-
-namespace App\Providers;
-
-use Encore\Admin\LogViewer\LogViewer;
-use Illuminate\Support\ServiceProvider;
-
-class AppServiceProvider extends ServiceProvider
-{
-    public function boot()
-    {
-        LogViewer::boot();
-    }
-}
-```
-
-At last run: 
-
-```
 $ php artisan admin:import log-viewer
 ```
 
-Finally open `http://localhost/admin/logs`.
+Open `http://localhost/admin/logs`.
 
 License
 ------------

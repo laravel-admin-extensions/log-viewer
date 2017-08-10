@@ -13,7 +13,7 @@ trait BootExtension
     {
         static::registerRoutes();
 
-        Admin::extend('log-viwer', __CLASS__);
+        Admin::extend('log-viewer', __CLASS__);
     }
 
     /**
@@ -38,6 +38,6 @@ trait BootExtension
     {
         parent::createMenu('Log viwer', 'logs', 'fa-database');
 
-        parent::createPermission('Logs', 'ext.log-viwer', 'logs*');
+        parent::createPermission('Logs', 'ext.log-viewer', 'logs*');
     }
 }

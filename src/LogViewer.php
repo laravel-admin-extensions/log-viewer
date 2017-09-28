@@ -5,8 +5,7 @@ namespace Encore\Admin\LogViewer;
 use Encore\Admin\Extension;
 
 /**
- * Class LogViewer
- * @package Encore\Admin\LogViewer
+ * Class LogViewer.
  */
 class LogViewer extends Extension
 {
@@ -66,16 +65,16 @@ class LogViewer extends Extension
     /**
      * Get file path by giving log file name.
      *
-     * @return string
-     *
      * @throws \Exception
+     *
+     * @return string
      */
     public function getFilePath()
     {
         if (!$this->filePath) {
             $path = sprintf(storage_path('logs/%s'), $this->file);
 
-            if (! file_exists($path)) {
+            if (!file_exists($path)) {
                 throw new \Exception('log not exists!');
             }
 
@@ -105,7 +104,7 @@ class LogViewer extends Extension
     public function getLogFiles($count = 20)
     {
         $files = glob(storage_path('logs/*'));
-        $files = array_combine($files, array_map("filemtime", $files));
+        $files = array_combine($files, array_map('filemtime', $files));
         arsort($files);
 
         $files = array_map('basename', array_keys($files));
@@ -163,13 +162,14 @@ class LogViewer extends Extension
      * @param int $seek
      * @param int $lines
      * @param int $buffer
+     *
      * @return array
      *
      * @see http://www.geekality.net/2011/05/28/php-tail-tackling-large-files/
      */
     public function fetch($seek = 0, $lines = 20, $buffer = 4096)
     {
-        $f = fopen($this->filePath, "rb");
+        $f = fopen($this->filePath, 'rb');
 
         if ($seek) {
             fseek($f, abs($seek));
@@ -177,7 +177,9 @@ class LogViewer extends Extension
             fseek($f, 0, SEEK_END);
         }
 
-        if(fread($f, 1) != "\n") $lines -= 1;
+        if (fread($f, 1) != "\n") {
+            $lines -= 1;
+        }
         fseek($f, -1, SEEK_CUR);
 
         // 从前往后读,上一页
@@ -187,28 +189,27 @@ class LogViewer extends Extension
 
             $this->pageOffset['start'] = ftell($f);
 
-            while(!feof($f) && $lines >= 0) {
+            while (!feof($f) && $lines >= 0) {
                 $output = $output.($chunk = fread($f, $buffer));
                 $lines -= substr_count($chunk, "\n[20");
             }
 
             $this->pageOffset['end'] = ftell($f);
 
-            while($lines++ < 0) {
-                $strpos = strrpos($output, "\n[20")+1;
+            while ($lines++ < 0) {
+                $strpos = strrpos($output, "\n[20") + 1;
                 $_ = mb_strlen($output, '8bit') - $strpos;
                 $output = substr($output, 0, $strpos);
                 $this->pageOffset['end'] -= $_;
             }
 
-        // 从后往前读,下一页
+            // 从后往前读,下一页
         } else {
-
             $output = '';
 
             $this->pageOffset['end'] = ftell($f);
 
-            while(ftell($f) > 0 && $lines >= 0) {
+            while (ftell($f) > 0 && $lines >= 0) {
                 $offset = min(ftell($f), $buffer);
                 fseek($f, -$offset, SEEK_CUR);
                 $output = ($chunk = fread($f, $offset)).$output;
@@ -218,7 +219,7 @@ class LogViewer extends Extension
 
             $this->pageOffset['start'] = ftell($f);
 
-            while($lines++ < 0) {
+            while ($lines++ < 0) {
                 $strpos = strpos($output, "\n[20") + 1;
                 $output = substr($output, $strpos);
                 $this->pageOffset['start'] += $strpos;
@@ -233,14 +234,14 @@ class LogViewer extends Extension
     /**
      * Get tail logs in log file.
      *
-     * @param integer $seek
+     * @param int $seek
      *
      * @return array
      */
     public function tail($seek)
     {
         // Open the file
-        $f = fopen($this->filePath, "rb");
+        $f = fopen($this->filePath, 'rb');
 
         if (!$seek) {
             // Jump to last character
@@ -272,11 +273,12 @@ class LogViewer extends Extension
      * Render table row.
      *
      * @param $log
+     *
      * @return string
      */
     protected function renderTableRow($log)
     {
-        $color = LogViewer::$levelColors[$log['level']] ?? 'black';
+        $color = self::$levelColors[$log['level']] ?? 'black';
 
         $index = uniqid();
 
@@ -304,13 +306,13 @@ class LogViewer extends Extension
 </tr>
 $trace
 TPL;
-
     }
 
     /**
      * Parse raw log text to array.
      *
      * @param $raw
+     *
      * @return array
      */
     protected function parseLog($raw)

@@ -11,7 +11,7 @@ class LogController extends Controller
 {
     public function index($file = null, Request $request)
     {
-        if($file === null) {
+        if ($file === null) {
             $file = (new LogViewer())->getLastModifiedLog();
         }
 

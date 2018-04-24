@@ -36,7 +36,7 @@ trait BootExtension
      */
     public static function import()
     {
-        parent::createMenu('Log Viewer', 'logs', 'fa-database');
+        parent::createMenu('Log viewer', 'logs', 'fa-database');
 
         parent::createPermission('Logs', 'ext.log-viewer', 'logs*');
     }

@@ -40,7 +40,7 @@ class LogController extends Controller
     {
         $offset = $request->get('offset');
 
-        $viewer = new LogViewer($file);
+        $viewer = new LogViewer($file.".log");
 
         list($pos, $logs) = $viewer->tail($offset);
 

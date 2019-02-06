@@ -72,7 +72,7 @@ class LogViewer extends Extension
     public function getFilePath()
     {
         if (!$this->filePath) {
-            $path = sprintf(storage_path('logs/%s'), $this->file);
+            $path = sprintf(storage_path('logs/%s').".log", $this->file);
 
             if (!file_exists($path)) {
                 throw new \Exception('log not exists!');
@@ -103,11 +103,12 @@ class LogViewer extends Extension
      */
     public function getLogFiles($count = 20)
     {
-        $files = glob(storage_path('logs/*'));
+        $files = glob(storage_path('logs/*.log'));
         $files = array_combine($files, array_map('filemtime', $files));
         arsort($files);
 
         $files = array_map('basename', array_keys($files));
+        $files = array_map(function($x){ return str_replace(".log", "", $x);}, $files);
 
         return array_slice($files, 0, $count);
     }

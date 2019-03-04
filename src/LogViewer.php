@@ -30,7 +30,10 @@ class LogViewer extends Extension
      *
      * @var array
      */
-    protected $pageOffset = [];
+    protected $pageOffset = [
+        'start' => 0,
+        'end' => 0,
+    ];
 
     /**
      * @var array
@@ -169,6 +172,9 @@ class LogViewer extends Extension
      */
     public function fetch($seek = 0, $lines = 20, $buffer = 4096)
     {
+        if (!is_file($this->filePath)) {
+            return $this->parseLog("");
+        }
         $f = fopen($this->filePath, 'rb');
 
         if ($seek) {

@@ -30,7 +30,10 @@ class LogViewer extends Extension
      *
      * @var array
      */
-    protected $pageOffset = [];
+    protected $pageOffset = [
+        'start' => 0,
+        'end' => 0,
+    ];
 
     /**
      * @var array
@@ -169,6 +172,9 @@ class LogViewer extends Extension
      */
     public function fetch($seek = 0, $lines = 20, $buffer = 4096)
     {
+        if (!is_file($this->filePath)) {
+            return $this->parseLog("");
+        }
         $f = fopen($this->filePath, 'rb');
 
         if ($seek) {
@@ -317,7 +323,7 @@ TPL;
      */
     protected function parseLog($raw)
     {
-        $logs = preg_split('/\[(\d{4}(?:-\d{2}){2} \d{2}(?::\d{2}){2})\] (\w+)\.(\w+):((?:(?!{"exception").)*)?/', trim($raw), -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $logs = preg_split('/\[(\d{4}(?:-\d{2}){2} \d{2}(?::\d{2}){2}\.\d+|\d{4}(?:-\d{2}){2} \d{2}(?::\d{2}){2})\] (\w+)\.(\w+):((?:(?!{"exception").)*)?/', trim($raw), -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 
         foreach ($logs as $index => $log) {
             if (preg_match('/^\d{4}/', $log)) {

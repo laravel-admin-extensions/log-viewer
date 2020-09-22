@@ -9,11 +9,14 @@ use Illuminate\Routing\Controller;
 
 class LogController extends Controller
 {
-    public function index($file = null, Request $request)
+    public function index(Request $request)
     {
-        if ($file === null) {
+        if (!$request->query('file')) {
             $file = (new LogViewer())->getLastModifiedLog();
-        }
+			
+        }else{
+			$file = $request->query('file');
+		}
 
         return Admin::content(function (Content $content) use ($file, $request) {
             $offset = $request->get('offset');
@@ -36,10 +39,10 @@ class LogController extends Controller
         });
     }
 
-    public function tail($file, Request $request)
+    public function tail(Request $request)
     {
+		$file = $request->query('file');
         $offset = $request->get('offset');
-
         $viewer = new LogViewer($file);
 
         list($pos, $logs) = $viewer->tail($offset);

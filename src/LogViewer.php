@@ -104,14 +104,41 @@ class LogViewer extends Extension
     public function getLogFiles($count = 20)
     {
         $files = glob(storage_path('logs/*'));
+		$files = $this->getFiles(storage_path('logs'));
+		//递归获取所有文件
+		
         $files = array_combine($files, array_map('filemtime', $files));
         arsort($files);
 
-        $files = array_map('basename', array_keys($files));
-
+		$files = array_map(array($this,'getName'), array_keys($files));
+		
         return array_slice($files, 0, $count);
     }
-
+	//自定义递归方法获取 当前文件夹下所有 文件: Array
+	private function getFiles($directory){
+		$files = glob("$directory/*");
+		
+		$array = array();
+		foreach($files as $file){
+			if(is_file($file)){
+				$array[] = $file;
+				continue;
+			}
+			if(is_dir($file)){
+				$array = array_merge($array,$this->getFiles($file));
+			}
+		}
+		return $array;
+	}
+	
+	private function getName($file){
+		$array = explode('/logs/',$file);
+		
+		if(count($array)>1){
+			return $array[1];
+		}
+		return $file;
+	}
     /**
      * Get the last modified log file.
      *
@@ -120,7 +147,6 @@ class LogViewer extends Extension
     public function getLastModifiedLog()
     {
         $logs = $this->getLogFiles();
-
         return current($logs);
     }
 

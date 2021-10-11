@@ -36,7 +36,7 @@ class LogController extends Controller
         });
     }
 
-    public function tail($file, Request $request)
+    public function tail(Request $request, $file)
     {
         $offset = $request->get('offset');
 

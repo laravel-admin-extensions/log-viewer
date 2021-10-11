@@ -171,6 +171,7 @@ class LogViewer extends Extension
     {
         if (!file_exists($this->filePath) || is_dir($this->filePath)) {
             $this->pageOffset = ['start' => 0, 'end' => 0];
+
             return $this->parseLog('');
         }
         $f = fopen($this->filePath, 'rb');
